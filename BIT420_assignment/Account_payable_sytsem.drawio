@@ -1,0 +1,67 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.7.5 Chrome/126.0.6478.183 Electron/31.3.0 Safari/537.36" version="24.7.5">
+  <diagram name="Page-1" id="yvEmpNwyCRS0mZBzxxMF">
+    <mxGraphModel dx="1120" dy="1711" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="gLpxITMBrCXckoR3guFl-1" value="" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=mxgraph.basic.rect;fillColor2=none;strokeWidth=1;size=20;indent=5;" parent="1" vertex="1">
+          <mxGeometry x="180" width="390" height="530" as="geometry" />
+        </mxCell>
+        <mxCell id="gLpxITMBrCXckoR3guFl-2" value="Invoice_approval" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="280" y="130" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="gLpxITMBrCXckoR3guFl-3" value="Supplyers,customers" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" parent="1" vertex="1">
+          <mxGeometry x="70" y="30" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="gLpxITMBrCXckoR3guFl-4" value="" style="endArrow=none;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="gLpxITMBrCXckoR3guFl-3" target="gLpxITMBrCXckoR3guFl-13" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="140" y="260" as="sourcePoint" />
+            <mxPoint x="190" y="210" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gLpxITMBrCXckoR3guFl-6" value="Financial_Manager" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" parent="1" vertex="1">
+          <mxGeometry x="60" y="140" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="gLpxITMBrCXckoR3guFl-7" value="Receive Products" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" parent="1" vertex="1">
+          <mxGeometry x="60" y="250" width="40" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="gLpxITMBrCXckoR3guFl-12" value="Payment_processing" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="290" y="320" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="gLpxITMBrCXckoR3guFl-13" value="Invoice_Receipt" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="290" y="30" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="gLpxITMBrCXckoR3guFl-18" value="" style="endArrow=none;html=1;rounded=0;exitX=0.5;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="gLpxITMBrCXckoR3guFl-6" target="gLpxITMBrCXckoR3guFl-2" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="50" y="240" as="sourcePoint" />
+            <mxPoint x="255" y="245" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gLpxITMBrCXckoR3guFl-23" value="&amp;lt;&amp;lt;Extends&amp;gt;&amp;gt;" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;edgeStyle=orthogonalEdgeStyle;" parent="1" source="gLpxITMBrCXckoR3guFl-9" target="gLpxITMBrCXckoR3guFl-2" edge="1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="360" y="145" as="sourcePoint" />
+            <mxPoint x="360" y="100" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gLpxITMBrCXckoR3guFl-26" value="Account_payable_system" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="250" y="-12" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="gLpxITMBrCXckoR3guFl-9" value="Invoice_data_Extraction" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="280" y="220" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="vT2LwCvU9PwONHU5e5e8-3" value="" style="endArrow=none;html=1;rounded=0;exitX=0.5;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" target="gLpxITMBrCXckoR3guFl-12" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="75" y="170" as="sourcePoint" />
+            <mxPoint x="280" y="166" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5pzQ5JqpAaBU2wltwSCd-1" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="gLpxITMBrCXckoR3guFl-9" target="gLpxITMBrCXckoR3guFl-7">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="390" y="280" as="sourcePoint" />
+            <mxPoint x="440" y="230" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
