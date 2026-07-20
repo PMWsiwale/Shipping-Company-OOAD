@@ -1,0 +1,17 @@
+/* animations.css */
+
+/* Fade-in-up animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 40px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.hero-content {
+  animation: fadeInUp 2s ease-in-out;
+}

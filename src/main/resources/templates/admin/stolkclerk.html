@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">	
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management System</title>
+    <link rel="stylesheet" th:href="@{/css/stylesclerk.css}">
+</head>
+
+<body class="dashboard-background">
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="stock-clerk-profile">
+                <div class="stock-clerk-icon">SC</div>
+                <div class="text-white">
+                    <strong>
+					<li><a th:href="@{'/fragip/admin/menu'}"  >
+					               <i class="fas fa-check-circle"></i> Home
+					           </a></li></strong><br>
+                    <small>Inventory section</small>
+                </div>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="#dashboard" class="active">🏠 Dashboard</a></li>
+                <li><a href="#inventory-management">📂 Inventory Records</a></li>
+                <li><a href="#added-stock">📦 Added Stock</a></li>
+                <li><a href="#record-stock">📝 Record Stock</a></li>
+                <li><a href="#stock-clerk-details">👔 Stock Clerks</a></li>
+
+                <li><a href="#reports">📊 Reports</a></li>
+                <li><a href="#settings">⚙️ Settings</a></li>
+            </ul>
+        </nav>
+
+        <main class="dashboard-content">
+            <!-- Dashboard Overview -->
+            <section id="dashboard" class="dashboard-section">
+                <h2>🏠 Dashboard Overview</h2>
+                <p>Welcome to the Inventory Management System. Below are the core elements you'll be managing.</p>
+                <div class="dashboard-elements">
+                    <div class="element-card"><h3>📂 Inventory Records</h3><p>View and manage stock details efficiently.</p></div>
+                    <div class="element-card"><h3>📦 Added Stock</h3><p>Review newly added stock entries.</p></div>
+                    <div class="element-card"><h3>📝 Record Stock</h3><p>Add stock data to the system.</p></div>
+                    <div class="element-card"><h3>👔 Stock Clerks</h3><p>Manage stock clerk details and assignments.</p></div>
+                    <div class="element-card"><h3>📊 Reports</h3><p>Generate inventory reports quickly.</p></div>
+                    <div class="element-card"><h3>⚙️ Settings</h3><p>Modify system preferences and configurations.</p></div>
+                </div>
+                <button class="button primary" onclick="navigateTo('inventory-management')">Go to Inventory Records</button>
+                <button class="button success" onclick="navigateTo('reports')">Go to Reports</button>
+            </section>
+
+            <!-- Inventory Records -->
+            <section id="inventory-management" class="dashboard-section">
+                <h2>📂 Inventory Records</h2>
+                <table class="data-table" >
+                    <thead>
+                        <tr><th>Type of Stock</th><th>Quantity</th><th>Location</th></tr>
+                    </thead>
+                    <tbody th:if="${records !=null}">
+                        <tr th:each="inventory: ${records}">
+							<td th:text="${inventory.itemType}"></td>
+							<td th:text="${inventory.quantity}"></td>
+							<td th:text="${inventory.location}"></td>
+						</tr>
+                       
+                    </tbody>
+                </table>
+			<div th:unless="${records !=null}"><h1 style="color:blue;">No Records Available</h1>
+            </section>
+
+            <!-- Added Stock -->
+            <section id="added-stock" class="dashboard-section">
+                <h2>📦 Added Stock</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Item Name</th><th>Customer Name</th><th>Supplier</th><th>Quantity</th><th>Location</th><th>Stock Type</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Item X</td><td>Customer Y</td><td>Supplier Z</td><td>10</td><td>Warehouse Y</td><td>Breakables</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Record Stock -->
+            <section id="record-stock" class="dashboard-section">
+                <h2>📝 Record Stock</h2>
+                <form class="record-stock-form" th:action="@{/adminl/clerk}"  method="post">
+                    <div class="form-group"><label>ITEM NAME:</label><input type="text" placeholder="Enter customer ID"></div>
+                    <div class="form-group"><label>ITEM NAME:</label><input type="text" placeholder="Enter supplier name"></div>
+                    <div class="form-group"><label>TYPE OF STOCK:</label>
+                        <select><option>Select type</option><option>New Stock</option><option>Cancelled Stock</option><option>Returned Stock</option></select>
+                    </div>
+                    <div class="form-group"><label>DATE OF PURCHASE:</label><input type="text" placeholder="Enter item name"></div>
+                    <div class="form-group"><label>BRAND NAME:</label><input type="text" placeholder="DOP"></div>
+                    <div class="form-group"><label>CATEGORY:</label><input type="text" placeholder="brand name"></div>
+                    <div class="form-group"><label>WEIGHT:</label><input type="number" placeholder="weight"></div>
+                    <div class="form-group"><label>CATEGORY:</label><input type="number" placeholder="category"></div>
+                    <div class="form-group"><label>CUSTOMER ID:</label><input type="number" placeholder="customer id"></div>
+                    <div class="form-group"><label>SUPPLIER NAME :</label><input type="number" placeholder="supplier"></div>
+                    <div class="form-group"><label>TYPE OF STOCK:</label><input type="number" placeholder="stock"></div>
+                    
+                    <button type="submit" class="button success">Save Stock Entry</button>
+                </form>
+            </section>
+
+            <!-- Stock Clerk Details -->
+            <section id="stock-clerk-details" class="dashboard-section">
+                <h2>👔 Stock Clerk Details</h2>
+                <form class="stock-clerk-form">
+                    <div class="form-group"><label>Username:</label><input type="text" placeholder="Enter username"></div>
+                    <div class="form-group"><label>Stock Clerk ID:</label><input type="text" placeholder="Enter ID"></div>
+                    <button type="submit" class="button success">Save</button>
+                </form>
+            </section>
+
+            <!-- Reports -->
+            <section id="reports" class="dashboard-section">
+                <h2>📊 Reports</h2>
+                <form class="report-form">
+                    <div class="form-group"><label>Select Report Type:</label>
+                        <select><option>Stock Summary</option><option>Supplier Transactions</option><option>Customer Purchases</option></select>
+                    </div>
+                    <div class="form-group"><label>Date Range:</label><input type="date"></div>
+                    <button type="button" class="button success">Generate Report</button>
+                </form>
+            </section>
+
+            <!-- Settings -->
+            <section id="settings" class="dashboard-section">
+                <h2>⚙️ Settings</h2>
+                <form class="settings-form">
+                    <div class="form-group"><label>Select Theme:</label>
+                        <select><option>Light Mode</option><option>Dark Mode</option></select>
+                    </div>
+                    <div class="form-group"><label>Enable Notifications:</label><input type="checkbox" checked></div>
+                    
+                    <button type="button" class="button success">Save Settings</button>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <script th:src="@{/js/script.js}"></script>
+</body>
+</html>

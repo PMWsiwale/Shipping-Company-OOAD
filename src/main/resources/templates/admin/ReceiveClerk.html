@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">	
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Receive Clerk Dashboard | Inventory Management System</title>
+    <meta name="description" content="Dashboard for receive clerks to manage incoming shipments and inventory">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" th:href="@{/admincss/receive-clerk.css}" type="text/css" />
+
+</head>
+
+
+
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="header-content">
+                <h1><i class="fas fa-box-open"></i> Receive Clerk Dashboard</h1>
+                <nav class="breadcrumb">
+                     <span>Receive Clerk</span>
+                </nav>
+            </div>
+			<div th:if="${error}" class="alert alert-danger">
+			    <span th:text="${error}"></span>
+			</div>
+            <div class="user-controls">
+                <div class="user-profile">
+                    <span id="currentUser">Alex Jr</span>
+
+					<form th:action="@{/fragip/admin/logout}" method="post">
+											<button id="logoutBtn" type="submit"><i class="fas fa-sign-out-alt"></i> Logout</button> 
+														               </form>
+					
+                </div>
+            </div>
+        </header>
+
+        <div class="clerk-summary">
+            <div class="clerk-card">
+                <div class="clerk-avatar">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+
+                <div class="clerk-info" th:object="${employee}">
+                    <h2 id="clerkName" th:text="${employee.firstName +' '+employee.lastName}"></h2>
+                    <p>Employee ID: <span id="employeeId" th:text="${employee.ssn}"></span></p>
+                    <p>Position: <span id="Position" th:text="${employee.position}">Receive Clerk</span></p>
+                    <p>Last Login: <span id="lastLogin">Today, 09:42 AM</span></p>
+
+                    <div class="stats">
+                        <div class="stat-box">
+                            <span class="stat-value" id="todaysShipments">12</span>
+                            <span class="stat-label">Incoming Shipments</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-value" id="pendingCount">5</span>
+                            <span class="stat-label">Processing</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-value" id="receivedCount">7</span>
+                            <span class="stat-label">Received</span>
+                        </div>
+					   
+						
+					<a th:href="@{'/fragip/admin/stock'}"  > <div class="stat-box"
+						 ><h2> Manage Stock </h2></div></a>
+										              
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-actions">
+            <a th:href="@{'/fragip/admin/verifiedorders'}"  class="action-button">
+                <i class="fas fa-check-circle"></i> View Verified Orders
+            </a>
+        </div>
+
+        <div class="section-actions">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+				<form th:action="@{/fragip/admin}" method="post">
+				                   <input type="search" id="verifyShipmentSearch" name="id" 
+				                          placeholder="Search to verify shipments..." >
+				                   <button type="submit" id="searchVerifyBtn" class="search-btn">
+				                       <i class="fas fa-search"></i> Search
+				                   </button>
+				               </form>
+            </div>
+        </div>
+
+		<!-- Modify your table to handle null cases -->
+		<div class="table-responsive" th:if="${order != null}">
+		    <table class="data-table">
+		        <thead>
+		            <tr>
+		                <th>Order ID</th>
+		                <th>Item Name</th>
+						<th>Item Number</th>
+		                <th>Quantity</th>
+		                <th>Unit Price</th>
+		                <th>Category</th>
+		                <th>Customer</th>
+		                <th>Supplier</th>
+		                <th>Purchase Date</th>
+		                <th>Description</th>
+		            </tr>
+		        </thead>
+		        <tbody>
+					<tr th:each="item : ${order}">
+						                    <td th:text="${item.orderID}"></td>
+											<td th:text="${item.itemName}"></td>
+								            <td th:text="${item.itemID}"></td>
+											<td th:text="${item.quantityInStock}"></td>
+											<td th:text="${item.unitPrice}"></td>
+											<td th:text="${item.category}"></td>
+											<td th:text="${item.username}"></td>
+											<td th:text="${item.companyName}"></td>
+											<td th:text="${item.addedDate}"></td>
+								            <td th:text="${item.description}"></td>
+								            
+								           
+								           
+								            
+								           
+									
+		            </tr>
+				
+					
+		        </tbody>
+		    </table>
+			<div class="verification-actions" th:each="item : ${order}">
+										 <form th:action="@{'/fragip/admin/verify/' + ${item?.orderID}}" method="post" th:object="${stolk}">
+											<input th:if="${item != null and item.orderID != null}" 
+											       th:value="${item.orderID}" 
+											       name="orderId" 
+											       type="hidden">
+												   <fieldset> <legend id="clerkName">Product Stolking Details</legend> 
+												   <p id="clerkName">Stolk Type:
+												    <br />
+												    <input type="radio" checked name="stockType" 
+												   value="New"  /> New Stock
+												    <input type="radio" name="stockType" 
+												   value="Cancelled" /> Cancelled Stock
+												    <input type="radio" name="stockType" 
+												   value="Returned" /> Returned Stock
+												    </p>
+													<label>Item Number:<input type="number" placementorder="enter Item Number above" required name="itemID"></label>
+													<br />
+													<label>Warehouse Location:<input type="text" required name="location"></label>
+													</fielset>
+													  <button class="btn btn-success" id="verifyOrderBtn">
+									                      <i class="fas fa-check-circle"></i> Verify And Stolk Order
+									                  </button>
+									              <button class="btn btn-danger" id="reportDiscrepancyBtn">
+									                      <i class="fas fa-exclamation-triangle"></i> Report Discrepancy
+									                  </button>
+										  </form>			  
+									          </div>
+           </div>
+		   
+		      </div>
+			
+		
+
+		<!-- Show message when no order is found -->
+		<div th:unless="${order != null}" class="alert alert-info">
+		   <p> No order details to display. Please search for an order.</p>
+		</div>
+
+    <div class="shipment-section">
+        <div class="section-header">
+            <h2><i class="fas fa-truck-loading"></i> Current Incoming Shipments</h2>
+
+        </div>
+
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Shipment ID</th>
+                        <th>Status</th>
+                        <th>Supplier</th>
+                        <th>Items</th>
+                        <th>Expected Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="shipmentTableBody">
+                    <tr>
+                        <td>SH-1001</td>
+                        <td><span class="badge badge-processing">Processing</span></td>
+                        <td>Tech Supplies Inc.</td>
+                        <td>3 items</td>
+                        <td>2023-11-17</td>
+                        <td class="actions">
+
+                            <button class="btn-icon" title="Receive"><i class="fas fa-check"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>SH-1002</td>
+                        <td><span class="badge badge-received">Received</span></td>
+                        <td>Office Essentials</td>
+                        <td>5 items</td>
+                        <td>2023-11-15</td>
+                        <td class="actions">
+                            <button class="btn-icon" title="Received"><i class="fas fa-x"></i></button>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+
+
+    <div class="modal" id="discrepancyModal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2><i class="fas fa-exclamation-triangle"></i> Report Discrepancy</h2>
+            <form id="discrepancyForm">
+                <div class="form-group">
+                    <label for="discrepancyType">Discrepancy Type</label>
+                    <select id="discrepancyType" required>
+                        <option value="">Select type...</option>
+                        <option value="damaged">Damaged Goods</option>
+                        <option value="missing">Missing Items</option>
+                        <option value="wrong">Wrong Items</option>
+                        <option value="quantity">Quantity Mismatch</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="discrepancyDetails">Details</label>
+                    <textarea id="discrepancyDetails" rows="4" required placeholder="Describe the discrepancy in detail..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="discrepancyPhotos">Upload Photos (Optional)</label>
+                    <input type="file" id="discrepancyPhotos" multiple accept="image/*">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelReportBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Submit Report</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src=""></script>
+	<script th:src="@{/js/receive clerk.js}"></script>
+	<script th:src="@{/javascripty/detail.js}"></script>
+</body>
+
+</html>

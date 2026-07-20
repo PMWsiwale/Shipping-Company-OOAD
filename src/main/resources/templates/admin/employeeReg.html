@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Registration</title>
+    
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" >
+    <link rel="stylesheet" th:href="@{/css/stylesEmployee.css}">
+</head>
+<body>
+    <div class="background">
+      <dev id="center">
+         <h1>WELCOME TO FRAGIP SHIPPING COMPANY</h1>
+        <h2>EMPLOYEE REGISTRATION</h2>
+		<form th:action="@{/fragip/admin/logout}" method="post">
+													<button id="logoutBtn" type="submit"><i class="fas fa-sign-out-alt"></i> Home</button> 
+																               </form>
+      </dev>
+    </div>
+    <p>    </p>
+	<form th:action="@{register}" method="post" th:object="${register}">
+      <div class="row">
+      <h6>EMPLOYEE NAME</h6>
+        <div class="col">
+          <input type="text" th:field="*{fname}" class="form-control" placeholder="First name" aria-label="First name">
+        </div>
+        <div class="col">
+
+          <input type="text" th:field="*{lname}" class="form-control" placeholder="Last name" aria-label="Last name">
+        </div>
+        <div class="col">
+
+            <input type="date" th:field="*{birthdate}" class="form-control" placeholder="birth date" max="2011-01-01" min="1950-01-01">
+          
+          <p>     </p>
+          </div>
+          <div class="row">
+            <h6>EMPLOYEE ADDRESS</h6>
+              <div class="col">
+                <input type="text" th:field="*{city}" class="form-control" placeholder="city" aria-label="city">
+              </div>
+              <div class="col">
+      
+                <input type="text" th:field="*{province}" class="form-control" placeholder="PROVINCE" aria-label="town">
+              </div>
+              <div class="col">
+      
+                  <input type="text"th:field="*{country}" class="form-control" placeholder="Country" aria-label="street address">
+                
+                  <P>       </P>
+                </div>
+                <div class="row">
+              
+                    <div class="col">
+                      <input type="text" th:field="*{pobox}" class="form-control" placeholder="P.O.BOX" aria-label="plot address">
+                    </div>
+                    <div class="col">
+            
+                      <input type="text" th:field="*{house}" class="form-control" placeholder="house no" aria-label="Last name">
+                    </div>
+					<div class="col">
+					            
+					                      <input type="text" th:field="*{streetName}" class="form-control" placeholder="Street name" aria-label="Last name">
+					                    </div>
+                    <p>    </p>
+              
+                      
+                        
+                      </div>
+                      <div class="row"><br>
+
+                        <h6>CONTACT INFO</h6>
+                          <div class="col">
+                            <input type="text" th:field="*{phoneNumber}" class="form-control" placeholder="phone no" aria-label="phone no">
+                          </div>
+                          <div class="col">
+                  
+                            <input type="text" th:field="*{email}" class="form-control" placeholder="email address" aria-label="email address">
+                          </div>
+                          <div class="col">
+                  
+                              <input type="text" class="form-control" placeholder="next of kin" aria-label="next of kin">
+                              
+                              
+                            </div>
+                            <div class="row"><br>
+
+                              <h6>PASSWORD</h6>
+                                <div class="col">
+                                  <input type="text" class="form-control" placeholder="password" aria-label="password">
+                                </div>
+                                <div class="col">
+                                  <input type="text" th:field="*{password}" class="form-control" placeholder="confirm password" aria-label="confirm password">
+                                </div>
+
+
+            <!-- Role in the Company -->
+             <p>    </p>
+             <p>   </p>
+             <h6>POSITION IN THE COMPANY</h6>
+             <div class="drop down">
+              <label for="validationTooltip04" class="drop down"></label>
+              <select th:field="*{position}" class="form-select" id="validationTooltip04" required>
+                <option selected disabled value="">Choose position...</option>
+                <option value= "order Processor"">ORDER Processor"</option>
+                <option value= "Receiving clerk">RECEIVING CLERK</option>
+                <option value= "General">General employee</option>
+                <option value= "Filling Clerk">FILLING CLERK</option>
+                <option value= "Shipper">SHIPPER</option> 
+				<option value= "Admin">Admin</option> 
+              </select>
+			  <h6>BranchName</h6>
+			  <div class="drop down">
+			                <label for="validationTooltip04" class="drop down"></label>
+			                <select th:field="*{branchNo}" class="form-select" id="validationTooltip04" required>
+			                  <option selected disabled value="">Choose branch...</option>
+			                  <option value= "Kitwe">Kitwe Branch</option>
+			                  <option value= "Chingola">Chingola Branch</option>
+			                  <option value= "Ndola">Ndola Branch</option>
+			                  <option value= "Lusaka">Lusaka Branch</option>
+			                  <option value= "Kasama">Kasama Branch</option>
+			                  <option value= "Livingstone">LivingStone Branch</option> 
+			                </select>
+							
+							<h6>Department</h6>
+										  <div class="drop down">
+										                <label for="validationTooltip04" class="drop down"></label>
+										                <select th:field="*{departementname}" class="form-select" id="validationTooltip04" required>
+										                  <option value= "" selected disabled >Choose Department...</option>
+										                  <option value= "Delivary">Delivary</option>
+										                  <option value= "Shipping">Shipping</option>
+										                  <option value= "stolking">stolking</option>
+										                  <option value= "Receiving">Receiving</option>
+										                  <option value= "Processing">processing</option>
+										                  <option value= "Managing">Managing</option> 
+										                </select>				
+            <button type="submit">Register</button>
+        </form>
+    </div>
+    
+<footer style="background-color: #abd6d8; padding: 20px; text-align: center;">
+  <div style="display: inline-block; vertical-align: top; margin-right: 50px;">
+    <h4>About Us</h4>
+    <p>at FRAGIP, we are dedicated to providing reliable 
+      and efficient shipping solutions to our esteemed customers.
+      Our team of experts ensure that your cargo is handled with
+      care and delivered on time  
+    </p>
+  </div>
+  <div style="display: inline-block; vertical-align: top;">
+    <h4>Contact Us</h4>
+    <p>Email:chibeka362@gmail.com</p>
+    <p>Phone: 0965999646</p>
+  </div>
+  <p>&copy; 2025 Your Company</p>
+</footer>
+
+    <script th:src="@{/js/scriptEmployee.js}"></script>
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">	
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard | Account Center</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/mystyle.css}">
+</head>
+<body>
+    <!-- Dashboard Header -->
+    <header class="dashboard-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-7 text-center text-md-start" th:object="${employee}">
+                    <h1>Welcome back, Our Estimed Customer!</h1>
+					<h1>Loged in As: <p th:text="${employee.firstName +' '+employee.lastName}"></p></h1>
+					<p class="mb-0" th:text="${employee.username}"></p>
+                    <p class="mb-0"></p>
+					<form th:action="@{/fragip/admin/logout}" method="post">
+										<button id="logoutBtn" type="submit"><i class="fas fa-sign-out-alt"></i> Logout</button> 
+																			               </form>
+                </div>
+                <div class="col-md-3 text-center text-md-end mt-3 mt-md-0">
+                    <button class="btn btn-light me-2"><i class="fas fa-cog"></i></button>
+                    <button class="btn btn-light"><i class="fas fa-bell"></i> <span class="badge badge-notification">3</span></button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="row mb-4">
+            <!-- Quick Stats -->
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <h5><i class="fas fa-shopping-bag me-2"></i>Orders</h5>
+                    <p class="stats-number">Always In Time</p>
+                    <p class="text-muted"></p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <h5><i class="fas fa-money-bill me-2"></i></h5>
+                    <p class="stats-number">Deal with Kwacha</p>
+                    <p class="text-muted"></p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <h5><i class="fas fa-star me-2"></i>Rewards are yours</h5>
+                    <p class="stats-number"></p>
+                    <p class="text-muted"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Main Content -->
+            <div class="col-lg-8">
+                <!-- Quick Actions -->
+                <div class="dashboard-card mb-4">
+                    <h3 class="section-title">Quick Actions</h3>
+                 <!----  <div class="d-flex flex-wrap">
+                        <button class="btn btn-primary quick-action-btn">Search</button>
+                       <form> <input id="Track_Order" type="search" name="Track Your Order" placeholder="Track Your Order"></form>
+                        <button class="btn btn-outline-primary quick-action-btn"><i class="fas fa-exchange-alt me-2"></i>Track Return</button>
+                        <button class="btn btn-outline-primary quick-action-btn"><i class="fas fa-file-invoice-dollar me-2"></i>Request Invoice</button>
+                        <button class="btn btn-outline-primary quick-action-btn"><i class="fas fa-question-circle me-2"></i>Get Help</button>
+                    </div>
+					-->
+
+					
+                    <!-- Table -->
+                    <div class="dashboard-card mb-4">
+                        <h5 class="section-title mb-4">Shipment Tracking</h5>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light" th:if="${order !=null}">
+                                    <tr>
+                                        <th><i class="fas fa-info-circle me-1"></i> Status</th>
+										<th><i class="fas fa-boxes me-1"></i>orderID</th>
+										<th><i class="fas fa-boxes me-1"></i>item Number</th>
+										<th><i class="fas fa-boxes me-1"></i>item Name</th>
+                                        <th><i class="fas fa-boxes me-1"></i> Quantity</th>
+                                       
+                                        <th><i class="fas fa-tags me-1"></i> Category</th>
+                                        <th><i class="fas fa-truck me-1"></i> Supplier</th>
+                                        <th><i class="fas fa-calendar-alt me-1"></i> Shipment Date</th>
+                                        
+                                        <th><i class="fas fa-flag me-1"></i> Destination</th>
+                                        <th><i class="fas fa-check me-1"></i> Customer Confirmation</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+									
+                                    <tr th:each="item: ${order}">
+                                        <td><span class="badge bg-success" th:text="${item.currentLocation}">In Transit</span></td>
+                                        <td  th:text="${item.orderID}"></td>
+                                        <td th:text="${item.itemID}"></td>
+                                        <td th:text="${item.itemName}"></td>
+                                        <td th:text="${item.quantityInStock}"></td>
+                                        <td th:text="${item.category}"></td>
+                                        <td th:text="${item.companyName}"></td>
+                                        <td th:text="${item.orderDate}"></td>
+										<td th:text="${item.country +' '+item.province+' '+item.city+ ' '+item.streetName+' '+ item.residentialAddress
+									                       }"></td>
+                                        <td>
+											
+											
+											<form th:action="@{/fragip/login/user/confirm}" method="post">
+														<input th:if="${item != null and item.orderID != null}" 
+															   th:value="${item.orderID}" 
+														       name="orderId" 
+																   type="hidden">
+																   <button class="btn btn-sm btn-confirm-receipt">
+																                                                  <i class="fas fa-check-circle me-1"></i> Confirm Receipt
+																                                              </button>
+																																				              
+																												   </form>
+                                        </td>
+                                    </tr>                                
+                                   
+                                  
+                                </tbody>
+                            </table>
+                        </div>
+
+						
+
+                        
+                    </div>
+
+
+                    
+                </div>   
+				
+
+                <!-- Recent Activity -->
+                <div class="dashboard-card">
+                    <h3 class="section-title">Recent Activity</h3>
+                    <ul class="recent-activity">
+                        <li>
+                            <div class="d-flex justify-content-between">
+                                <span><i class="fas fa-truck me-2 text-success"></i> Order #45892 shipped</span>
+                                <small class="text-muted">Today, 11:30 AM</small>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="d-flex justify-content-between">
+                                <span><i class="fas fa-check-circle me-2 text-primary"></i> Order #45891 delivered</span>
+                                <small class="text-muted">Yesterday, 3:45 PM</small>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="d-flex justify-content-between">
+                                <span><i class="fas fa-file-invoice-dollar me-2 text-info"></i> Invoice #INV-2025-458 generated</span>
+                                <small class="text-muted">May 12, 2025</small>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="d-flex justify-content-between">
+                                <span><i class="fas fa-star me-2 text-warning"></i> You earned 250 reward points</span>
+                                <small class="text-muted">May 10, 2025</small>
+                            </div>
+                        </li>
+                    </ul>
+                    <a href="#" class="mt-2 align-self-end">View all activity <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <!-- Sidebar Navigation -->
+            <div class="col-lg-4">
+                <div class="dashboard-card">
+                    <h3 class="section-title">Account Navigation</h3>
+                    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                        <div class="row g-3">
+                            <div class="col-6 col-lg-12">
+								<!-- Payment Methods Section -->
+														<div class="dashboard-card mb-4">
+														    <h3 class="section-title">Payment Methods</h3>
+														    <p>Select your preferred payment method and proceed with payment:</p>
+														    <form th:action="@{/fragip/login/user/payment}" method="post">
+														        <div class="form-check mb-2">
+														            <input class="form-check-input" type="radio" name="paymentMethod" id="creditCard" value="Credit Card" required>
+														            <label class="form-check-label" for="creditCard">
+														                <i class="fas fa-credit-card me-2"></i> Credit Card
+														            </label>
+														        </div>
+														        <div class="form-check mb-2">
+														            <input class="form-check-input" type="radio" name="paymentMethod" id="paypal" value="PayPal">
+														            <label class="form-check-label" for="paypal">
+														                <i class="fab fa-paypal me-2"></i> PayPal
+														            </label>
+														        </div>
+														        <div class="form-check mb-2">
+														            <input class="form-check-input" type="radio" name="paymentMethod" id="mobileMoney" value="Mobile Money">
+														            <label class="form-check-label" for="mobileMoney">
+														                <i class="fas fa-mobile-alt me-2"></i> Mobile Money
+														            </label>
+														        </div>
+														       <label> OrderID:<input typpe="number" name="orderId"  required></label>
+														        <button type="submit" class="btn btn-success mt-3">
+														            <i class="fas fa-wallet me-2"></i> Pay Now
+														        </button>
+														    </form>
+														</div>
+                            </div>
+                            <div class="col-6 col-lg-12">
+                                <a class="nav-link text-start py-3" id="payment-tab" data-bs-toggle="pill" href="#payment" role="tab">
+                                    <i class="fas fa-credit-card me-2"></i> Payment & Invoices
+                                </a>
+                            </div>
+                            <div class="col-6 col-lg-12">
+                                <a class="nav-link text-start py-3" id="returns-tab" data-bs-toggle="pill" href="#returns" role="tab">
+                                    <i class="fas fa-exchange-alt me-2"></i> Return Management
+                                </a>
+                            </div>
+                            <div class="col-6 col-lg-12">
+                                <a class="nav-link text-start py-3" id="communication-tab" data-bs-toggle="pill" href="#communication" role="tab">
+                                    <i class="fas fa-comments me-2"></i> Communication Panel
+                                </a>
+                            </div>
+                            <div class="col-6 col-lg-12">
+                                <a class="nav-link text-start py-3" id="reports-tab" data-bs-toggle="pill" href="#reports" role="tab">
+                                    <i class="fas fa-chart-bar me-2"></i> Reports & Feedback
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Promo Card -->
+                <div class="dashboard-card" style="background: linear-gradient(135deg, var(--primary-color), var(--accent-color)); color: white;">
+                    <h4>Special Offer!</h4>
+                    <p>Get 20% off your next order with code: DASHBOARD20</p>
+                    <button class="btn btn-light align-self-start mt-2">Shop Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <footer class="mt-5 py-4 text-center text-muted">
+        <div class="container">
+            <p>© 2025 FRAGIP LOGISTICS COMPANY. All rights reserved.</p>
+            <div>
+                <a href="#" class="text-muted me-3"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="text-muted me-3"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-muted me-3"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="text-muted"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+    </footer> -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shipping Clerk Dashboard</title>
+	<link rel="stylesheet" th:href="@{/admincss/receive-clerk.css}" type="text/css" />
+    <style>
+         :root {
+            --primary: #3498db;
+            --primary-dark: #2980b9;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --gray: #95a5a6;
+            --light: #f5f7fa;
+            --dark: #2c3e50;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 20px;
+        }
+        
+        .sidebar {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+        }
+        
+        .sidebar-nav {
+            list-style: none;
+        }
+        
+        .sidebar-nav li {
+            margin-bottom: 8px;
+        }
+        
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 15px;
+            color: var(--dark);
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-nav a:hover,
+        .sidebar-nav a.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .sidebar-nav i {
+            width: 20px;
+            text-align: center;
+        }
+        
+        .main-content {
+            background-color: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .content-section {
+            display: none;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        .search-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .search-container input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 15px;
+        }
+        
+        .search-container button {
+            padding: 0 15px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .order-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .priority {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .priority.high {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .priority.normal {
+            background-color: var(--warning);
+            color: white;
+        }
+        
+        .customer-details {
+            background-color: var(--light);
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .edit-customer-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .customer-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .customer-field {
+            margin-bottom: 8px;
+        }
+        
+        .customer-field strong {
+            display: inline-block;
+            width: 120px;
+        }
+        
+        .customer-edit-form {
+            display: none;
+        }
+        
+        .customer-edit-form.active {
+            display: block;
+        }
+        
+        .customer-display {
+            display: block;
+        }
+        
+        .customer-display.hidden {
+            display: none;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .btn-warning {
+            background-color: var(--warning);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background-color: var(--light);
+            color: var(--dark);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .order-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .shipping-form {
+            margin-top: 20px;
+        }
+        
+        .report-form {
+            max-width: 800px;
+        }
+        
+        .notification-banner {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .orders-list {
+            margin-top: 20px;
+        }
+        
+        .order-item {
+            border: 1px solid #eee;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .order-item:hover {
+            border-color: var(--primary);
+        }
+        
+        .order-item-info {
+            flex: 1;
+        }
+        
+        .order-item-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .order-status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .status-ready {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .status-processing {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            .customer-row {
+                grid-template-columns: 1fr;
+            }
+            .order-actions {
+                flex-direction: column;
+            }
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            .order-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .order-item-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+            /* Add to your existing CSS */
+            header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 15px 25px;
+                background-color: var(--primary);
+                color: white;
+                border-radius: 8px;
+                margin-bottom: 20px;
+            }
+            .header-left {
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+            }
+            .clerk-info {
+                display: flex;
+                gap: 15px;
+                font-size: 14px;
+            }
+            .clerk-info span {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+            }
+            .header-actions {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+            }
+            @media (max-width: 768px) {
+                header {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 15px;
+                }
+                .clerk-info {
+                    flex-wrap: wrap;
+                    gap: 8px;
+                }
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Shipping Clerk Dashboard</h1>
+            <div class="user-info">
+                <span><i class="fas fa-warehouse"></i> </span>
+                <div class="clerk-info"  th:object="${employee}">
+                    <span th:text="${employee.firstName +' '+ employee.lastName}"><i class="fas fa-user"></i> John Banda</span>
+                    <span >Clerk ID:<i class="fas fa-id-card" th:text="${employee.ssn}"></i>  </span>
+                    <span><i class="fas fa-warehouse" th:text="${employee.position}"></i></span>
+					<form th:action="@{/fragip/admin/logout}" method="post">
+																<button id="logoutBtn" type="submit"><i class="fas fa-sign-out-alt"></i> Logout</button> 
+																			               </form>
+                </div>
+            </div>
+        </header>
+
+        <div class="dashboard">
+            <aside class="sidebar">
+                <nav>
+                    <ul class="sidebar-nav">
+                        <li><a href="#shipping-section" class="active"><i class="fas fa-truck"></i> Shipping</a></li>
+                        <li><a href="#orders-section"><i class="fas fa-list"></i> Orders Ready</a></li>
+                        <li><a href="#reports-section"><i class="fas fa-exclamation-circle"></i> Reports</a></li>
+                    </ul>
+                </nav>
+
+                <div class="user-profile" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+                    <p style="font-size: 14px; color: var(--gray);"><i class="fas fa-user-shield"></i> Shipping Clerk</p>
+                </div>
+            </aside>
+
+            <main class="main-content">
+                <div class="notification-banner" id="notification-banner">
+                    <i class="fas fa-check-circle"></i> <span id="notification-message"></span>
+                </div>
+
+                <section id="shipping-section" class="content-section active">
+                    <h2>Search For Order By id Or Get It From The <span style="color: #2ecc71; font-weight: bold;">"Ready Orders"</span> To Be Prepared For Shipping</h2>
+                    <div class="search-container">
+                        
+                        
+						
+						<form th:action="@{/fragip/admin/shipper}" method="post">
+										                  <input type="text" id="order-search" required name="id" placeholder="Search orders by ID, customer, or status...">
+										                   <button id="search-btn"><i class="fas fa-search"></i> Search</button>
+										               </form>
+						
+                    </div>
+					
+					<div th:if="${error != null}" class="alert alert-info">
+												   <h3 style="color:red;" th:text="${error}"></h3>
+												   <h3 style="color:green;">This Order is not Ready for Shipment
+												   													or has been processed already.--> check "ORDER Ready" Menu
+												   												   </h3>
+						</div>
+					<div th:unless="${address != null}" class="alert alert-info">
+							   <p style="color:blue;"> No order details to display. Please search for an order.</p>
+							</div>
+
+                    <div class="order-card"  th:if="${address != null}" th:each="addr: ${address}">
+                        <div class="order-header">
+                            <h3>Order #
+								<span th:text="${addr.orderID}"></span>
+							</h3>
+
+                        </div>
+
+                        <div class="customer-details">
+                            
+
+                            <!-- Customer Display View -->
+                            <div class="customer-display" id="customer-display">
+                                <h4><i class="fas fa-user"></i> Customer Details</h4>
+                                <div class="customer-row">
+                                    <div class="customer-field">
+                                        <strong>Name:</strong> <span id="display-name" 
+										th:text="${addr.firstName +' '+ addr.lastName}"></span>
+                                    </div>
+                                    <div class="customer-field">
+                                        <strong>Phone:</strong> <span id="display-phone" th:text="${addr.phoneNumber}"></span>
+                                    </div>
+                                </div>
+                                <div class="customer-row">
+                                    <div class="customer-field">
+                                        <strong>Address:</strong> <span id="display-address" 
+										th:text="${addr.residentialAddress +', '+addr.streetName}"></span>
+                                    </div>
+                                    <div class="customer-field">
+                                        <strong>City:</strong> <span id="display-city" th:text="${addr.city}"></span>
+                                    </div>
+                                </div>
+                                <div class="customer-row">
+                                    <div class="customer-field">
+                                        <strong>Email:</strong> <span id="display-email" th:text="${addr.email}">cmwape@example.com</span>
+                                    </div>
+                                    <div class="customer-field">
+                                        <strong>Province:</strong> <span id="display-province" th:text="${addr.province}">Lusaka Province</span>
+                                    </div>
+									<div class="customer-field">
+									                                       <strong>Country:</strong> <span id="display-province" th:text="${addr.country}">Lusaka Province</span>
+									                                   </div>
+                                </div>
+                                <div class="customer-field">
+                                    <strong>Delivery Notes:</strong> <span id="display-notes">Leave with security if not home</span>
+                                </div>
+                            </div>
+
+                            
+                                
+                            
+                        </div>
+						<form th:action="@{'/fragip/admin/shipper/process/' +${addr?.orderID}}" method="post" th:object ="${ship}" >
+                        <div class="shipping-form">
+                            <h4><i class="fas fa-shipping-fast"></i> Shipping Details</h4>
+                            
+                            <div class="form-group">
+                                <label for="transport-mode">Transport Mode*</label>
+                                <select id="transport-mode" required name="transportType" >
+                                    <option value="">Select transport</option>
+                                    <option value="road">Road Transport</option>
+                                    <option value="air">Air Freight</option>
+                                    <option value="sea">Sea Freight</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="transport-details">Transport Details*</label>
+                                <textarea name="transportDetails"id="transport-details" rows="3" required placeholder="Truck number, driver name, flight details, etc."></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="estimated-delivery">Estimated Delivery Date*</label>
+                                <input name="Dateshipped" type="date" id="estimated-delivery" required>
+                            </div>
+
+                            <div class="order-actions">
+                                <button type ="submit" class="btn btn-primary" id="process-shipping-btn">
+                                    <i class="fas fa-shipping-fast"></i> Process Shipping Order
+                                </button>
+                                <button class="btn btn-warning" id="notify-customer-btn">
+                                    <i class="fas fa-envelope"></i> Notify Customer
+                                </button>
+                                <a href="update.html?order=ZM45621" class="btn btn-success">
+                                    <i class="fas fa-edit"></i> Update Status
+                                </a>
+                            </div>
+                        </div>
+						</form>
+                    </div>
+                </section>
+
+                <section id="orders-section" class="content-section">
+                    <h2><i class="fas fa-list"></i> Orders Ready for Shipping</h2>
+
+                    <div class="fas fa-list">
+                        <h3 style="text-align: center;
+						    color: green;">UPDATE STATUS OF ORDERS</h3>
+                    </div>
+
+                    <div class="orders-list" id="ready-orders-list">
+                        <!-- Orders will be populated here by JavaScript -->
+						<div class="table-responsive" >
+								    <table class="data-table" th:if="${readyOrders != null}" >
+								        <thead >
+								            <tr>
+								                <th>Order ID</th>
+								                <th>customer Name</th>
+												<th>Email</th>
+												<th>Date Purchased</th>
+												
+								                <th>Destination</th>
+												<th>Delivered</th>
+								                <th>Current Location</th>
+								                <th>Action</th>
+								                
+								                 </tr>
+								        </thead>
+								        <tbody>
+											<tr th:each="order: ${readyOrders}">
+												<td th:text="${order.orderID}"></td>
+												<td  th:text="${order.firstName +' ' + order.lastName}"></td>
+												<td  th:text="${order.username}"></td>
+												<td  th:text="${order.orderDate}"></td>
+												<td  th:text="${order.city +', '+order.country}"></td>
+												<form th:action="@{../admin/shipper/update}" method="post" th:object="${locationUpdate}"> 
+												<td >
+													<select id="transport-mode" required name="delivared" >
+													                                    <option value="" style="color:green;" th:text="${order.deliveryStatus}">update</option>
+													                                    <option value="yes">yes</option>
+													                                    <option value="no">No</option>
+													                                    
+													                                </select>	
+												 </td>
+												<td>
+													<select id="transport-mode" required name="currentLocation" >
+													                                    <option Style="color:green;" value="" th:text="${order.currentLocation}">Location</option>
+													                                    <option value="Warehouse">WareHouse</option>
+													                                    <option value="In Transit">In Transit</option>
+													                                    <option value="at Final Destination ">Final Destination</option>
+													                                </select>
+												</td>
+												<td  style="color:blue;"><button type ="submit" class="btn btn-primary" id="process-shipping-btn">
+												                                    <i class="fas fa-shipping-fast"></i>Update
+												                                </button></td>
+												<td> <input type="hidden" name="orderId" th:value="${order.orderID}"></td>
+												
+												</form>
+											</tr>
+										
+											
+								        </tbody>
+								    </table>
+									</div>
+                    </div>
+                </section>
+
+                <section id="reports-section" class="content-section">
+                    <h2><i class="fas fa-exclamation-circle"></i> Incident Reports</h2>
+
+                    <form id="report-form" class="report-form">
+                        <div class="form-group">
+                            <label for="report-title">Report Title*</label>
+                            <input type="text" id="report-title" placeholder="Brief description of the issue" required>
+                        </div>
+
+                        <div class="customer-row">
+                            <div class="form-group">
+                                <label for="report-type">Issue Type*</label>
+                                <select id="report-type" required>
+                                    <option value="">Select issue type</option>
+                                    <option value="damage">Product Damage</option>
+                                    <option value="delay">Shipping Delay</option>
+                                    <option value="missing">Missing Items</option>
+                                    <option value="other">Other Issue</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="report-priority">Priority*</label>
+                                <select id="report-priority" required>
+                                    <option value="low">Low</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="high">High</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="report-order-id">Related Order ID</label>
+                            <input type="text" id="report-order-id" placeholder="ZM12345">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="report-details">Detailed Description*</label>
+                            <textarea id="report-details" rows="5" required placeholder="Provide complete details of the incident including any relevant order numbers, product SKUs, and specific issues encountered"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="report-attachments">Attachments</label>
+                            <input type="file" id="report-attachments" multiple>
+                            <small style="font-size: 12px; color: var(--gray);">Upload photos or documents (max 5MB each)</small>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane"></i> Submit Report
+                            </button>
+                        </div>
+                    </form>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script>
+       
+        // Navigation between sections
+        document.querySelectorAll('.sidebar-nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                // Hide all sections
+                document.querySelectorAll('.content-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+
+                // Show selected section
+                const target = this.getAttribute('href');
+                document.querySelector(target).classList.add('active');
+
+                // Update active nav link
+                document.querySelectorAll('.sidebar-nav a').forEach(navLink => {
+                    navLink.classList.remove('active');
+                });
+                this.classList.add('active');
+
+                // If showing ready orders, refresh the list
+                if (target === '#orders-section') {
+                    populateReadyOrders(readyOrders);
+                }
+            });
+        });
+
+        // Customer details editing functionality
+        const editBtn = document.getElementById('edit-customer-btn');
+        const cancelEditBtn = document.getElementById('cancel-edit-btn');
+        const customerDisplay = document.getElementById('customer-display');
+        const customerForm = document.getElementById('customer-edit-form');
+
+        editBtn.addEventListener('click', function() {
+            customerDisplay.classList.add('hidden');
+            customerForm.classList.add('active');
+        });
+
+        cancelEditBtn.addEventListener('click', function() {
+            customerDisplay.classList.remove('hidden');
+            customerForm.classList.remove('active');
+        });
+
+        document.getElementById('customer-edit-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Get form values
+            const name = document.getElementById('edit-name').value;
+            const phone = document.getElementById('edit-phone').value;
+            const email = document.getElementById('edit-email').value;
+            const address = document.getElementById('edit-address').value;
+            const city = document.getElementById('edit-city').value;
+            const province = document.getElementById('edit-province').value;
+            const notes = document.getElementById('edit-notes').value;
+
+            // Validate Zambian phone number
+            if (!phone.match(/\+260\d{9}/)) {
+                showNotification('Please enter a valid Zambian phone number (+260 followed by 9 digits)', 'error');
+                return;
+            }
+
+            // Update display
+            document.getElementById('display-name').textContent = name;
+            document.getElementById('display-phone').textContent = formatPhoneNumber(phone);
+            document.getElementById('display-email').textContent = email;
+            document.getElementById('display-address').textContent = address;
+            document.getElementById('display-city').textContent = city;
+            document.getElementById('display-province').textContent = province;
+            document.getElementById('display-notes').textContent = notes;
+
+            // Switch back to display view
+            customerDisplay.classList.remove('hidden');
+            customerForm.classList.remove('active');
+
+            showNotification('Customer details updated successfully!');
+        });
+
+        // Process shipping button
+        document.getElementById('process-shipping-btn').addEventListener('click', function() {
+            const transportMode = document.getElementById('transport-mode').value;
+            const transportDetails = document.getElementById('transport-details').value;
+            const deliveryDate = document.getElementById('estimated-delivery').value;
+
+            if (!transportMode || !transportDetails || !deliveryDate) {
+                showNotification('Please fill in all required shipping fields', 'error');
+                return;
+            }
+
+            // Generate tracking number
+            const trackingNumber = 'ZM' + Math.floor(10000000 + Math.random() * 90000000);
+
+            showNotification(`Shipping processed successfully! Tracking Number: ${trackingNumber}`);
+
+            // Reset form
+            document.getElementById('transport-details').value = '';
+        });
+
+        // Notify customer button
+        document.getElementById('notify-customer-btn').addEventListener('click', function() {
+            const customerName = document.getElementById('display-name').textContent;
+            const customerPhone = document.getElementById('display-phone').textContent;
+            const customerEmail = document.getElementById('display-email').textContent;
+
+            if (confirm(`Send shipping notification to ${customerName} at ${customerPhone} and ${customerEmail}?`)) {
+                showNotification(`Notification sent to ${customerName}`);
+                this.innerHTML = '<i class="fas fa-check"></i> Customer Notified';
+                this.disabled = true;
+                this.classList.remove('btn-warning');
+                this.classList.add('btn-success');
+            }
+        });
+
+        // Report form submission
+        document.getElementById('report-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showNotification('Incident report submitted successfully');
+            this.reset();
+        });
+
+        // Search functionality for orders
+        document.getElementById('search-btn').addEventListener('click', function() {
+            const searchTerm = document.getElementById('order-search').value.toLowerCase();
+            if (searchTerm) {
+                showNotification(`Searching for: ${searchTerm}`);
+                // In a real app, this would filter orders from the database
+            }
+        });
+
+        // Search functionality for ready orders
+        document.getElementById('ready-search-btn').addEventListener('click', function() {
+            const searchTerm = document.getElementById('ready-orders-search').value.toLowerCase();
+            const filteredOrders = readyOrders.filter(order =>
+                order.id.toLowerCase().includes(searchTerm) ||
+                order.customer.toLowerCase().includes(searchTerm) ||
+                order.city.toLowerCase().includes(searchTerm) ||
+                order.status.toLowerCase().includes(searchTerm)
+            );
+            populateReadyOrders(filteredOrders);
+        });
+
+        // Populate ready orders list
+        function populateReadyOrders(orders) {
+            const ordersList = document.getElementById('ready-orders-list');
+            ordersList.innerHTML = '';
+
+            if (orders.length === 0) {
+                ordersList.innerHTML = '<p>No orders ready for shipping</p>';
+                return;
+            }
+
+            orders.forEach(order => {
+                const orderItem = document.createElement('div');
+                orderItem.className = 'order-item';
+                orderItem.innerHTML = `
+                    <div class="order-item-info">
+                        <h4>Order #${order.id}</h4>
+                        <p><strong>Customer:</strong> ${order.customer}</p>
+                        <p><strong>Date:</strong> ${order.date} | <strong>Items:</strong> ${order.items} | <strong>City:</strong> ${order.city}</p>
+                    </div>
+                    <div class="order-item-actions">
+                        <span class="order-status status-ready">Ready</span>
+                    </div>
+                `;
+                ordersList.appendChild(orderItem);
+            });
+        }
+
+        // Helper functions
+        function showNotification(message, type = 'success') {
+            const banner = document.getElementById('notification-banner');
+            const messageEl = document.getElementById('notification-message');
+
+            messageEl.textContent = message;
+
+            // Set appropriate styling based on type
+            if (type === 'error') {
+                banner.style.backgroundColor = '#f8d7da';
+                banner.style.color = '#721c24';
+            } else {
+                banner.style.backgroundColor = '#d4edda';
+                banner.style.color = '#155724';
+            }
+
+            banner.style.display = 'flex';
+            banner.style.gap = '10px';
+            banner.style.alignItems = 'center';
+
+            // Hide after 5 seconds
+            setTimeout(() => {
+                banner.style.display = 'none';
+            }, 5000);
+        }
+
+        function formatPhoneNumber(phone) {
+            // Format as +260 XX XXX XXXX
+            return phone.replace(/(\+260)(\d{2})(\d{3})(\d{3})/, '$1 $2 $3 $4');
+        }
+
+        // Set default delivery date to 3 days from now
+        const today = new Date();
+        const deliveryDate = new Date(today);
+        deliveryDate.setDate(deliveryDate.getDate() + 3);
+        document.getElementById('estimated-delivery').valueAsDate = deliveryDate;
+
+        // Initialize ready orders list if on that page
+        if (window.location.hash === '#orders-section') {
+            populateReadyOrders(readyOrders);
+        }
+        // Sample clerk data (in a real app, this would come from your backend)
+        const clerkData = {
+            name: "John Banda",
+            id: "SC-7842",
+            warehouse: "WH-LUS-7842"
+        };
+
+        // Function to update clerk info display
+        function updateClerkInfo() {
+            document.querySelector('.clerk-info span:nth-child(1)').innerHTML =
+                `<i class="fas fa-user"></i> ${clerkData.name}`;
+            document.querySelector('.clerk-info span:nth-child(2)').innerHTML =
+                `<i class="fas fa-id-card"></i> Clerk ID: ${clerkData.id}`;
+            document.querySelector('.clerk-info span:nth-child(3)').innerHTML =
+                `<i class="fas fa-warehouse"></i> ${clerkData.warehouse}`;
+        }
+
+        // Call this when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            updateClerkInfo();
+            // ... rest of your existing code
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,67 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #f5f7fa;
+    margin: 0;
+    padding: 0;
+}
+
+.card-glass {
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 16px;
+    padding: 30px;
+    margin: 40px auto;
+    max-width: 1000px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-buttons {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.toggle-buttons button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    border: none;
+    background-color: #e7e7e7;
+    color: #333;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.toggle-buttons button.active {
+    background-color: #0d6efd;
+    color: white;
+}
+
+.search-bar input {
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
+}
+
+.search-container {
+    display: flex;
+    margin-bottom: 1rem;
+}
+
+.search-container input {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.search-container button {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+footer.footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 10px;
+    background: #212529;
+    color: white;
+    position: relative;
+}

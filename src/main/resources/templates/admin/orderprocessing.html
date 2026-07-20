@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="author" content="Ruth Bwembya" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Order Processing Department</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/order.css}" />
+    <style>
+
+    </style>
+</head>
+
+<body  th:if="${employee !=null}">
+      
+                
+                <nav class="breadcrumb">
+					<form th:action="@{/fragip/admin/logout}" method="post">
+										<button id="logoutBtn" type="submit"><i class="fas fa-sign-out-alt"></i> Log out</button> 
+																			               </form>  / <span>OPS</span>
+                </nav>
+           
+            <div class="user-controls">
+                <div class="user-profile">
+                    <span id="currentUser" th:text="${employee?.firstName +' '+ employee?.lastName}"></span>
+                   
+					
+                </div>
+            </div>
+        
+
+        
+            <div class="clerk-card">
+                <div class="clerk-avatar">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+
+                <div class="clerk-info" th:object="${employee}">
+                    <h2 id="clerkName" th:text="${employee.firstName +' '+ employee.lastName}">Alex Jr</h2>
+                    <p >Employee ID: <span id="employeeId" th:text="${employee.ssn}">RC-22179213</span></p>
+                    <p>Position: <span id="Position" th:text="${employee.position}">Order operator</span></p>
+
+                 </div>
+           
+    
+
+
+    <div class="card-glass">
+        <h2>Order Processing Section</h2>
+
+        <div class="toggle-buttons">
+            <button id="showListBtn" class="active">Track Order Status</button>
+            <button id="showDetailsBtn">Request Orders</button>
+        </div>
+
+        <!-- Track Order View -->
+        <div id="orderListView">
+            <div class="search-container">
+                <input type="text" id="orderSearch" class="form-control" placeholder="Search Order ID..." />
+                <button id="searchOrderBtn" class="btn btn-primary">Search</button>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-dark text-center">
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Stocked</th>
+                            <th>Requested</th>
+                            
+                          
+                            <th>Shipped</th>
+                            <th>Fulfilled</th>
+                            <th>Delivered</th>
+							<th>Paid</th>
+                            <th>Confirmed</th>
+                            <th>Current Location</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersTableBody"  th:if="${statusOrder != null}">
+						<tr th:each="status: ${statusOrder}">
+						                            <td th:text="${status.orderID}"></td>
+													<td th:text="${status.approvalStatus}">Order ID</td>
+													<td th:text="${status.requestStatus}">NO</td>
+													
+													
+													<td th:text="${status.shipmentStatus}">No</td>
+													<td th:text="${status.fulfillmentStatus}">No</td>
+													<td th:text="${status.deliveryStatus}">No</td>
+													<td th:text="${status.paid}"></td>
+													<td th:text="${status.confirmationStatus}">No</td>
+													<td th:text="${status.currentLocation}"></td>
+						                         
+						                        </tr>
+						
+					</tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Request Orders View -->
+        <div id="orderDetailsView" style="display:none;" >
+            <h3 class="text-center mb-4">Requested Orders</h3>
+            <div class="search-container">
+                <input type="text" id="requestSearch" class="form-control" placeholder="Search Order ID..." />
+                <button id="searchRequestBtn" class="btn btn-primary">Search</button>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-primary text-center">
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Item ID</th>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                                                        
+							<th>Customer</th>
+							<th>Supplier</th>
+							<th>Description</th>
+							<th>PurchaseDate</th>
+							<th>Action</th>
+							
+                        </tr>
+                    </thead>
+                    <tbody id="orderDetailsTableBody" th:if="${order != null}">
+						<tr th:each="item : ${order}">
+												                    <td th:text="${item.orderID}"></td>
+																    <td th:text="${item.itemID}"></td>
+																	<td th:text="${item.itemName}"></td>
+																	<td th:text="${item.quantityInStock}"></td>
+																	
+																	
+																	<td th:text="${item.firstName +' ' + item.lastName}"></td>
+																	<td th:text="${item.companyName}"></td>
+																	
+														            <td th:text="${item.description}"></td>
+																	<td th:text="${item.addedDate}"></td>
+																	
+																	<td > 	<form th:action="@{'/fragip/admin/ops/' + ${item?.orderID}}" method="post">
+																											<input th:if="${item != null and item.orderID != null}" 
+																											       th:value="${item.orderID}" 
+																											       name="orderId" 
+																											       type="hidden">
+																									              <button class="btn btn-success" id="verifyOrderBtn">
+																									              <i class="fas fa-check-circle"></i>SendFulfilment Request
+																									                  </button>
+																									              
+																	   </form></td>
+														            
+														           
+														           
+														            
+														           
+															
+								            </tr>
+						
+					</tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">&copy; FRAGIP LOGISTICS 2025. All rights reserved.</footer>
+
+    
+    <script th:src="@{/js/display.js}"></script>
+
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+
+</html>

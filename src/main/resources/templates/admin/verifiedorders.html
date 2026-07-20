@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verified Orders | Inventory Management System</title>
+    <meta name="description" content="View all verified orders in the inventory system">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" th:href="@{/admincss/receive-clerk.css}" />
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="header-content">
+                <h1><i class="fas fa-check-circle"></i> Verified Orders</h1>
+                <nav class="breadcrumb">
+                    <a href="ReceiveClerk.html">Dashboard</a> / <span>Verified Orders</span>
+                </nav>
+            </div>
+            <div class="user-controls">
+                <div class="user-profile">
+                    <span id="currentUser">Alex Jr</span>
+					<form th:action="@{/fragip/admin/logout}" method="post">
+															<button id="logoutBtn" type="submit"><i class="fas fa-sign-out-alt"></i> Logout</button> 
+																								               </form>
+                </div>
+            </div>
+        </header>
+
+        <div class="filter-controls">
+            <div class="filter-group">
+                <label for="dateFilter">Date Range:</label>
+                <select id="dateFilter">
+                    <option value="today">Today</option>
+                    <option value="week">This Week</option>
+                    <option value="month">This Month</option>
+                    <option value="custom">Custom Range</option>
+                </select>
+            </div>
+            <div class="filter-group date-range" id="customDateRange" style="display: none;">
+                <input type="date" id="startDate">
+                <span>to</span>
+                <input type="date" id="endDate">
+            </div>
+
+            <button class="btn btn-primary" id="applyFilters">
+                <i class="fas fa-filter"></i> Apply Filters
+            </button>
+            <button class="btn btn-secondary" id="exportData">
+                <i class="fas fa-file-export"></i> Export
+            </button>
+        </div>
+
+        <div class="shipment-section">
+            <div class="table-responsive">
+                <table class="data-table" >
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Items</th>
+                            <th>Verified By</th>
+                            <th>Date Verified</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody th:if="${ViewOrder != null}">
+                        <tr th:each="item : ${ViewOrder}">
+							
+                            <td th:text="${item.orderID}" ></td>
+                            <td th:text="${item.firstName}" ></td>
+                            <td th:text="${item.qitem}" ></td>
+                            <td th:text="${item.companyName}" ></td>
+                            <td th:text="${item.date}" ></td>
+                            <td><span class="badge badge-success">Verified</span></td>
+                            <td class="actions">
+                                <button class="btn-icon" title="View Details"><i class="fas fa-eye"></i></button>
+
+                            </td>
+                        </tr>
+                    
+             
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/js/verified orders.js}"></script>
+
+</body>
+
+</html>

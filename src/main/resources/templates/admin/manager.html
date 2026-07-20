@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/stylesManager.css}">
+</head>
+<body>
+
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="manager-profile">
+                <div class="manager-icon">M</div>
+                <div class="manager-details">
+                    <strong>Manager</strong><br>
+                    <small>Accounts & Inventory</small>
+                </div>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="#dashboard-content">🏠 Dashboard</a></li>
+                <li><a href="#invoice-approval-content">📜 Invoice Approval</a></li>
+                <li><a href="#approved-invoices">📂 Inventory Records</a></li>
+                <li><a href="#recent-invoices">📂 Recent Invoices</a></li>
+                <li><a href="#suppliers">👔 Suppliers</a></li>
+                <li><a href="#reports">📊 Reports</a></li>
+                <li><a href="#settings">⚙️ Settings</a></li>
+            </ul>
+        </aside>
+
+        <main class="dashboard-content">
+            <section class="dashboard-section" id="home">
+                <h2>Welcome, Manager</h2>
+                <p>Oversee accounts and inventory with these sections:</p>
+                <ul class="overview-list">
+                    <li>📜 Invoice Approval - Manage invoices.</li>
+                    <li>✅ Approved Invoices - View processed approvals.</li>
+                    <li>📂 Recent Invoices - Review latest transactions.</li>
+                    <li>👔 Suppliers - Monitor supplier interactions.</li>
+                    <li>📊 Reports - Analyze performance.</li>
+                    <li>⚙️ Settings - Adjust preferences.</li>
+                </ul>
+            </section>
+
+<section class="dashboard-section" id="invoice-approval-content">
+    <h2>📜 Invoice Approval</h2>
+    <div class="form-container">
+        <div class="form-group">
+            <label for="search-invoice">Search Invoice by ID:</label>
+            <div class="search-invoice-container">
+				<select id="invoice-dropdown" class="form-control" >
+				    <option value="" disabled selected>Select Invoice ID</option>
+				    <option th:each="invoiceId : ${invoicelist}" 
+				            th:value="${invoiceId.orderID}" 
+				            th:text="${invoiceId.orderID}">
+				    </option>
+				</select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="status">Approval Status:</label>
+            <select id="status" class="form-control">
+                <option value="pending">Pending</option>
+                <option value="approved">Approved</option>
+                <option value="declined">Declined</option>
+            </select>
+        </div>
+
+        <div class="form-actions">
+            <button class="button success">✅ Approve Invoice</button>
+            <button class="button danger">❌ Decline Invoice</button>
+        </div>
+
+        <p id="approval-status"></p>
+    </div>
+
+    <!-- Approved Invoices Table -->
+    <h2>📂 INVOICE DETAILS</h2>
+    <table class="data-table" >
+        <thead>
+            <tr  >
+                <th>item Id</th>
+                <th>Invoice ID</th>
+                <th>Item Name</th>
+                <th>description</th>
+                <th>Category</th>
+                <th>unitPrice</th>
+                <th>supplier</th>
+                
+                <th>quantity</th>
+                <th>Purchase Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+			<tr th:each="item : ${invoicelist}">
+			            <td th:text="${item.itemID}"></td>
+			            <td th:text="${item.orderID}"></td>
+			            <td th:text="${item.itemName}"></td>
+			            <td th:text="${item.description}"></td>
+			            <td th:text="${item.category}"></td>
+			            <td th:text="${item.unitPrice}"></td>
+			            <td th:text="${item.companyName}"></td>
+			            <td th:text="${item.quantityInStock}"></td>
+			            <td th:text="${item.addedDate}"></td>
+			            <td>APPROVED</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+     <section class="dashboard-section" id="approved-invoices">
+                <h2>INVOICE DETAILS</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Invoice ID</th>
+                            <th>Item Name</th>
+                            <th>Quantity</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Mark</td>
+                            <td>50</td>
+                            <td>Approved</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="dashboard-section" id="recent-invoices">
+                <h2>📂 Recent Invoices</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Invoice ID</th>
+                            <th>Item Name</th>
+                            <th>Quantity</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2</td>
+                            <td>John</td>
+                            <td>30</td>
+                            <td>APPROVED</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="dashboard-section" id="suppliers">
+    <h2>👔 Registered Suppliers</h2>
+    <p>Here are some suppliers associated with the company:</p>
+    <ul class="supplier-list">
+        <li>ABC Ltd.</li>
+        <li>XYZ Enterprises</li>
+        <li>Global Supplies</li>
+        <li>Tech Distribution Co.</li>
+        <li>FastTrack Logistics</li>
+    </ul>
+    <button class="button primary" onclick="addSupplier()">Add New Supplier</button>
+</section>
+
+           <section class="dashboard-section" id="reports">
+    <h2>📊 Generate Reports</h2>
+    <p>Select the report type and date range:</p>
+    <label for="report-type">Report Type:</label>
+    <select id="report-type">
+        <option value="inventory">Inventory Report</option>
+        <option value="sales">Sales Report</option>
+        <option value="supplier">Supplier Report</option>
+    </select>
+    <label for="report-date">Date Range:</label>
+    <input type="date" id="report-date">
+    <button class="button success" onclick="generateReport()">Generate Report</button>
+    <p id="report-status"></p>
+</section>
+
+<section class="dashboard-section" id="settings">
+    <h2>⚙️ Dashboard Settings</h2>
+    <p>Customize your dashboard preferences:</p>
+    <label for="theme-toggle">Theme:</label>
+    <select id="theme-toggle">
+        <option value="light">Light Mode</option>
+        <option value="dark">Dark Mode</option>
+    </select>
+    <label for="notifications">Enable Notifications:</label>
+    <input type="checkbox" id="notifications">
+    <button class="button success" onclick="applySettings()">Save Settings</button>
+    <p id="settings-status"></p>
+</section>
+        </main>
+    </div>
+
+    <script th:src="@{/js/scriptManager.js}"></script>
+</body>
+</html>

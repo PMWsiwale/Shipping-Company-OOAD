@@ -1,0 +1,89 @@
+<html><!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <link rel="stylesheet" th:href="@{/css/fulfillment.css}">
+</head>
+<body th:if="${summary !=null}">
+   <!-- Order Details Modal -->
+                <div id="orderDetailsModal" class="order-details" style="display:block;" th:each="order :${summary}" >
+                    <div class="section-header">
+                        <h2>Order Details orderID- <span id="modalOrderId" th:text="${order.orderID}"></span></h2>
+                        <button class="btn btn-icon" onclick="closeModal()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+                    <div class="detail-row">
+                        <div class="detail-label">Customer:</div>
+                        <div class="detail-value" id="customerName" th:text="${order.firstName +' '+order.lastName}"></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Order Date:</div>
+                        <div class="detail-value" id="orderDate" th:text="${order.date}">2023-11-15</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Items:</div>
+                        <div class="detail-value"><span class="badge badge-warning" th:text="${order.itemNumber}"></span></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Status:</div>
+                        <div class="detail-value"><span class="badge badge-primary">Pending</span></div>
+                    </div>
+                   
+
+                    <h3 style="margin-top: 1.5rem;">Order Items</h3>
+                    <table class="items-table">
+                        <thead>
+                            <tr>
+                                <th>Item number</th>
+								<th>Name </th>
+                                <th>Description</th>
+								<th>Category </th>
+								<th> Price</th>
+								<th>Quantity </th>
+					
+                               
+                                <th>Location</th>
+								<th> </th>
+                            </tr>
+                        </thead>
+                        <tbody id="orderItems" th:if="${viewItem != null}">
+                            <tr th:each="view: ${viewItem}">
+                                <td th:text="${view.itemID}"></td>
+								<td th:text="${view.itemName}"></td>
+								<td th:text="${view.category}"></td>
+								<td th:text="${view.unitprice}"></td>
+								<td th:text="${view.quantityInStock}"></td>
+								<td th:text="${view.location}"></td>
+                                
+                            </tr>
+                           
+                        </tbody>
+                    </table>
+
+                    <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem;">
+                        
+						<form th:action="@{'/fragip/admin/fulfil/mark/' + ${order?.orderID}}" method="post">
+																																<input th:if="${order != null and order.orderID != null}" 
+																																       th:value="${order.orderID}" 
+																																       name="orderId" 
+																																       type="hidden">
+																																	   <button class="btn btn-success" onclick="markAsFulfilled()">
+																																	                               <i class="fas fa-check"></i> Mark as Fulfilled
+																																	                           </button>
+																														              
+						 </form>
+                        <button class="btn btn-primary" onclick="printPackingSlip()">
+                            <i class="fas fa-print"></i> Print Packing Slip
+                        </button>
+                    </div>
+                </div>
+            </div>
+             <script th:src="@{/js/fulfillment .js}"></script>
+ 
+</body>
+</html>
