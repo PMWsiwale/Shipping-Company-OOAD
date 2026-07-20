@@ -1,5 +1,8 @@
 # Shipping Company OOAD System
 
+## 📋 Project Title
+**FRAGIP - Enterprise Shipping Company Management System**
+
 A comprehensive Spring Boot-based shipping company management system built using Object-Oriented Analysis and Design (OOAD) principles. This system manages the complete lifecycle of shipping operations including user management, order processing, inventory management, and account payable functions.
 
 ## 🚀 Project Overview
